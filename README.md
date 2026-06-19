@@ -3,7 +3,7 @@
 [![CI](https://github.com/reasvyn/rvlibs/actions/workflows/ci.yml/badge.svg)](https://github.com/reasvyn/rvlibs/actions)
 [![License](https://img.shields.io/crates/l/rvlibs.svg)](LICENSE)
 
-A Rust monorepo of libraries by Reas Vyn.
+**Advanced Modular Libraries for Rust**
 
 ## Crates
 
