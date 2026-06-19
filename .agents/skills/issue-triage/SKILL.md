@@ -2,31 +2,24 @@
 
 > SDLC Phase: **Maintenance**
 
-Triage, diagnose, and resolve issues across the rvlibs workspace.
+Triage, diagnose, and resolve issues.
 
 ## Steps
 
 ### 1. Classification
 
-Determine the issue type:
-
-| Type | Label | Response Time |
-|------|-------|---------------|
-| Bug | `bug` | 48h |
-| Security vulnerability | `security` | 24h (private disclosure) |
-| Feature request | `enhancement` | 1 week |
-| Documentation | `documentation` | 1 week |
-| Question | — | 1 week |
+| Type | Label |
+|------|-------|
+| Bug | `bug` |
+| Security vulnerability | `security` |
+| Feature request | `enhancement` |
+| Documentation | `documentation` |
 
 ### 2. Reproduction
 
-For bugs, verify the reproduction:
-
 ```bash
-# Check if it reproduces on main
-cargo test
-# Check the specific crate
-cargo test -p rvmath
+# Does the issue reproduce on main?
+cargo test --workspace
 ```
 
 - If the issue lacks a reproduction, request one
@@ -34,22 +27,15 @@ cargo test -p rvmath
 
 ### 3. Severity
 
-| Severity | Definition | Action |
-|----------|------------|--------|
-| Critical | Data loss, security, crash | Stop all work, fix immediately |
-| High | Feature broken, no workaround | Fix within 48h |
-| Medium | Feature broken, workaround exists | Fix within 1 week |
-| Low | Cosmetic, enhancement | Fix with next release |
+| Severity | Action |
+|----------|--------|
+| Critical (data loss, security, crash) | Immediate fix |
+| High (feature broken, no workaround) | Fast-track |
+| Medium (feature broken, workaround exists) | Normal schedule |
+| Low (cosmetic, enhancement) | Next release |
 
 ### 4. Resolution
 
 - **Bug**: Write a regression test, fix, then verify
 - **Feature**: Route to `requirements-gathering` skill
 - **Documentation**: Fix the relevant `.md` file
-- **Duplicate**: Close with reference to original issue
-
-### 5. Follow-Up
-
-- Ensure the fix has a test that covers the reported scenario
-- Update the issue with resolution notes
-- Close only after the fix is merged and released

@@ -17,6 +17,8 @@ for your current phase.
 | **Testing** | `quality-assurance` | Test placement, coverage gates, verification |
 | **Deployment** | `release-management` | Version bump, publish order, tagging |
 | **Maintenance** | `issue-triage` | Classify, reproduce, resolve issues |
+| **Docs** | `sync-docs` | Sinkronisasi markdown, fix broken links, audit references |
+| **Learning** | `grow-together` | Develop ecosystem-first learning content for docs/learn/ |
 
 ## Project structure
 
