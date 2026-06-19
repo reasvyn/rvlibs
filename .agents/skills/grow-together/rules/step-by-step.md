@@ -1,77 +1,37 @@
-# Step-by-Step Development Workflow
+# Step-by-Step
 
-Each piece of learning content follows a repeatable 5-step process.
+One concept at a time. Scaffold from known to unknown.
 
-## Step 1: Scope
+## Development Flow
 
-**Goal:** Define exactly what this document teaches.
+**Scope** → **Research** → **Outline** → **Draft** → **Review**
 
-- Identify the module and submodule (`docs/learn/{module}/{submodule}/`)
-- Write a one-sentence scope statement: "This document teaches X so the reader can Y."
-- List prerequisite concepts the reader must already know
-- List what is explicitly OUT of scope (to prevent scope creep)
+### Scope
+Define what the document teaches. Write a one-sentence scope statement.
+List what is explicitly out of scope.
 
-**Output:** A scope paragraph in the task prompt.
+### Research
+Gather authoritative sources before writing: Rust Book, docs.rs API signatures,
+Rust by Example, relevant RFCs. Verify code examples work with current stable.
 
-## Step 2: Research
+### Outline
+Structure with title, overview, prerequisites, 3-5 main sections, key code
+examples, glossary entries, and next steps.
 
-**Goal:** Gather authoritative sources before writing a single line.
+### Draft
+Write in plain English. Avoid jargon without definition. Keep paragraphs
+focused — one idea per paragraph. Use lists, tables, and ASCII diagrams to
+break up text. Code examples must be correct.
 
-- Read the relevant section of the Rust Book
-- Check docs.rs for the actual API signatures
-- Read Rust by Example for code-first perspectives
-- Search for RFCs if the feature had one
-- Check existing docs/learn/ content for cross-references
-- Verify all code examples compile with current stable Rust
-
-**Output:** A list of reference links and key API signatures.
-
-## Step 3: Outline
-
-**Goal:** Structure the document before drafting.
-
-Write an outline with:
-- Title (H1)
-- Overview paragraph
-- Prerequisites (bullet list)
-- 3–5 main sections (H2) in logical teaching order
-- Key code examples for each section
-- Glossarium entries (draft)
-- Next Steps (2–3 links)
-
-**Output:** A markdown outline with section headers and placeholders.
-
-## Step 4: Draft
-
-**Goal:** Write the full document following the outline.
-
-- Flesh out each section with explanations and code
-- Every claim should be verifiable (link to source or show code)
-- Code examples must be correct — run them if possible
-- Write in plain English, avoid jargon without definition
-- Keep paragraphs short (3–5 sentences max)
-- Use lists, tables, and diagrams to break up text
-
-**Output:** A complete document ready for review.
-
-## Step 5: Review & Iterate
-
-**Goal:** Polish and validate the document.
-
-Self-review checklist:
-- [ ] Does the title match the scope?
-- [ ] Are prerequisites accurate and linked?
-- [ ] Do code examples compile? (or marked with `ignore`/`no_run`)
-- [ ] Is every term in the Glossarium actually used in the document?
-- [ ] Are there at least one internal and one external Next Step link?
-- [ ] Does the document satisfy the ecosystem-first rule?
-- [ ] Is the tone inclusive and accessible?
-- [ ] Does the document follow the content-structure rule?
-
-**Output:** A merged, committed document.
+### Review
+- Does the title match the scope?
+- Do prerequisites cover what the reader actually needs?
+- Do code examples compile (or marked appropriately)?
+- Is every glossary term actually used in the document?
+- Are there at least one internal and one external next-step link?
+- Is the tone inclusive and accessible?
 
 ## Iteration
 
-When updating existing content, start from Step 4 (Draft) but check Step 2
-(Research) to ensure no information is stale.  Bump the document's last-updated
-metadata if applicable.
+When updating existing content, start from Research to ensure no information
+is stale.
