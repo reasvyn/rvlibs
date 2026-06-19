@@ -38,3 +38,8 @@ Core Rust language and standard library. Pure Rust — no external crates.
 | [Milestones](stories/milestones.md) | Key moments in Rust's development |
 | [Community](stories/community.md) | Governance, teams, Code of Conduct, conferences |
 | [Corporate Adoption](stories/corporate-adoption.md) | How Google, Microsoft, Meta, Amazon use Rust |
+| [Rust in Indonesia](stories/rust-in-indonesia.md) | The growing Rust community in Indonesia |
+| [Rust in Brazil](stories/rust-in-brazil.md) | Latin America's active Rust community |
+| [Rust in China](stories/rust-in-china.md) | China's massive Rust ecosystem |
+| [Rust in Japan](stories/rust-in-japan.md) | Japan's embedded and web Rust communities |
+| [Rust in Europe](stories/rust-in-europe.md) | Rust across European countries |
