@@ -6,11 +6,10 @@
 
 ## Documentation
 
-Start with the documentation in the `docs/` directory:
+Start with the [learning paths](docs/learn/index.md) or browse crate documentation:
 
 - [rvmath docs](docs/rvmath/) — architecture, conventions, philosophy, roadmap
-- [rvtest docs](docs/rvtest/) — architecture, conventions, getting started, learning path
-- [rvtest Learning Path](docs/rvtest/learn/00-index.md) — 21-chapter guide to testing in Rust
+- [rvtest docs](docs/rvtest/) — architecture, conventions, philosophy, roadmap
 - [README](README.md) — overview and quick start
 
 ## Community Support
