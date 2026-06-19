@@ -22,7 +22,7 @@ rvtest = "0.3.0"
 To use the CLI:
 
 ```bash
-cargo install rvtest
+cargo install cargo-rvtest
 ```
 
 Then run:

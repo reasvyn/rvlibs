@@ -2,7 +2,7 @@
 
 This document outlines the planned development trajectory for rvmath — focused on **pure mathematics** (algebra, analysis, linear algebra, discrete mathematics). Items are organized by rough dependency order, but timelines are flexible.
 
-> **Testing:** All new modules are tested using [`rvtest`](https://crates.io/crates/rvtest) — a BDD-style testing framework with spec blocks, property-based checks, and parametrized cases.
+> **Testing:** All new modules are tested using [`rvtest`](https://github.com/reasvyn/rvlibs/tree/main/crates/rvtest) — a BDD-style testing framework with spec blocks, property-based checks, and parametrized cases.
 
 ---
 

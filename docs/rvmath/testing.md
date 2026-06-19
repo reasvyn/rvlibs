@@ -2,7 +2,7 @@
 
 ## Framework
 
-rvmath uses [`rvtest`](https://crates.io/crates/rvtest) — a BDD-style testing framework for Rust that provides spec blocks, property-based checks, parametrized cases, rich reporting, and code coverage.
+rvmath uses [`rvtest`](https://github.com/reasvyn/rvlibs/tree/main/crates/rvtest) — a BDD-style testing framework for Rust that provides spec blocks, property-based checks, parametrized cases, rich reporting, and code coverage.
 
 Add `rvtest` as a dev-dependency in `Cargo.toml`:
 

@@ -15,7 +15,11 @@ Fixes # (issue)
 ## Checklist
 
 - [ ] I have run `cargo check` with zero warnings
-- [ ] I have run `cargo test` and all tests pass
+- [ ] I have run `cargo test --workspace` and all tests pass
 - [ ] I have added tests that cover my changes (if applicable)
 - [ ] I have updated the documentation (if applicable)
 - [ ] My commits are signed off (`git commit -s`)
+
+## Dogfooding (rvtest only)
+
+- [ ] All new tests use `describe`/`it` BDD API (no raw `#[test]` for complex scenarios)

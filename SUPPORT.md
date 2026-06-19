@@ -1,6 +1,6 @@
 # Support
 
-> How to get help with `rvtest`
+> How to get help with rvlibs
 
 ---
 
@@ -8,16 +8,16 @@
 
 Start with the documentation in the `docs/` directory:
 
-- [Getting Started](docs/getting-started.md) — tutorials and examples
-- [Architecture](docs/architecture.md) — how rvtest works internally
-- [Roadmap](docs/roadmap.md) — planned features
+- [rvmath docs](docs/rvmath/) — architecture, conventions, philosophy, roadmap
+- [rvtest docs](docs/rvtest/) — architecture, conventions, getting started, learning path
+- [rvtest Learning Path](docs/rvtest/learn/00-index.md) — 21-chapter guide to testing in Rust
 - [README](README.md) — overview and quick start
 
 ## Community Support
 
-- **GitHub Issues:** https://github.com/reasvyn/rvtest/issues
+- **GitHub Issues:** https://github.com/reasvyn/rvlibs/issues
   — for bug reports and feature requests
-- **GitHub Discussions:** https://github.com/reasvyn/rvtest/discussions
+- **GitHub Discussions:** https://github.com/reasvyn/rvlibs/discussions
   — for questions, ideas, and general help
 
 ## Commercial Support

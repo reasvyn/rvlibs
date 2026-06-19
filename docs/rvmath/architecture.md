@@ -1,6 +1,6 @@
 # Architecture
 
-rvmath is organized as a layered monorepo with a single crate. The architecture follows a dependency hierarchy where each layer builds on the types and traits defined below it.
+rvmath is organized as a layered crate within the rvlibs monorepo. The architecture follows a dependency hierarchy where each layer builds on the types and traits defined below it.
 
 ## Module Dependency Graph
 

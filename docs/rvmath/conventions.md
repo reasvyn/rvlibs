@@ -43,7 +43,7 @@ Sub-modules are re-exported via `pub use` in `mod.rs` so users can access items 
 
 ## Testing
 
-- All new tests use [`rvtest`](https://crates.io/crates/rvtest) — write specs with `describe`/`it`/`run`/`assert_all_pass()`.
+- All new tests use [`rvtest`](https://github.com/reasvyn/rvlibs/tree/main/crates/rvtest) — write specs with `describe`/`it`/`run`/`assert_all_pass()`.
 - Prefer integration tests in `crates/rvmath/tests/` directory.
 - Inline tests (`#[cfg(test)]`) and doctests are permitted but should be used sparingly.
 - Use descriptive spec names that describe the expected behavior (e.g., `"computes volume correctly"`).
