@@ -11,38 +11,45 @@ docs/learn/{module}/{submodule}/{short-description}.md
 
 No numeric IDs in filenames — `ownership.md` not `01-ownership.md`.
 
-## Anatomy
+## Document Anatomy
 
-Every document MUST have these sections in order:
+Every document MUST have these sections in **exactly this order**:
 
-```
-# Title
+| # | Section | Required | Description |
+|---|---------|----------|-------------|
+| 1 | `# {Title}` | ✅ | H1, short and descriptive |
+| 2 | Overview | ✅ | One paragraph explaining what this document covers |
+| 3 | `## Prerequisites` | ✅ | Concepts the reader must know, with links to prior docs or external resources |
+| 4 | Content | ✅ | H2/H3 sections with explanations, code examples, diagrams |
+| 5 | `## Glossarium` | ✅ | Table of `\| Term \| Definition \|` — only terms introduced in THIS document |
+| 6 | `## Next Steps` | ✅ | At least one link, preferably branching internal and external |
 
-Overview paragraph.
+## Concrete Rules
 
-## Prerequisites
+### Prerequisites
+- Be honest. If the reader needs generics, write "Basic generics — `T`, trait bounds."
+- Link to the relevant prerequisite document when available.
+- Format: bullet list.
 
-Concepts the reader should know before starting, with links.
+### Glossarium
+- Must be a markdown table with columns `Term` and `Definition`.
+- Only terms introduced in this document. If a term was defined in a prerequisite, link there instead.
+- Definition should be one sentence. Example:
 
-## ... content ...
+  ```
+  | Term | Definition |
+  |------|------------|
+  | Ownership | The set of rules that govern how Rust manages memory. |
+  ```
 
-(H2 and H3 sections, code examples, explanations)
+### Next Steps
+- Must offer at least one internal link and one external link.
+- Internal: another document in `docs/learn/`.
+- External: Rust Book, docs.rs, crates.io, Rust by Example, rustc book, etc.
+- Format: bullet list with descriptive link text.
 
-## Glossarium
-
-Terms introduced in THIS document, one definition per row.
-
-## Next Steps
-
-At least one link to continue learning (internal or external).
-```
-
-## Guidelines
-
-- **Prerequisites must be honest** — if the reader needs to know generics, say so.
-- **Glossarium entries must be scoped** — only terms introduced in this document.
-  If a term was defined in a prerequisite document, link there instead.
-- **Next Steps must branch** — offer multiple directions, at least one internal
-  and one external (Rust Book, docs.rs, crates.io, Rust by Example).
-- **Code examples must compile or be clearly marked** — use `rust,ignore` or
-  `rust,no_run` when they can't compile standalone.
+### Code Examples
+- Must compile on stable Rust unless marked with `rust,ignore` or `rust,no_run`.
+- Show output where it aids understanding.
+- Use `// ❌ ERROR:` for deliberate compile errors with the error message.
+- Use `// ✅` and `// ❌` to mark correct vs incorrect patterns.
