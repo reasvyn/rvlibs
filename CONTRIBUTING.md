@@ -93,6 +93,7 @@ cargo run --bin cargo-rvtest -- --coverage
 rvlibs/
 ├── Cargo.toml              # Workspace root
 ├── crates/
+│   ├── rvlibs/             # Shared contracts only
 │   ├── rvmath/             # Mathematics library
 │   │   ├── src/            # Source code
 │   │   └── tests/          # Integration tests

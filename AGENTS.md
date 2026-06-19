@@ -8,6 +8,7 @@ This file provides context and instructions for AI coding assistants working on 
 rvlibs/
 ├── Cargo.toml          # Workspace root
 ├── crates/
+│   ├── rvlibs/         # Shared contracts only
 │   ├── rvmath/         # Mathematics library (src/ + tests/)
 │   ├── rvtest/         # Testing library (src/ + tests/)
 │   ├── rvtest-macros/  # Proc-macros for rvtest
@@ -46,6 +47,7 @@ cargo fmt
 
 ## Conventions
 
+- **`rvlibs` crate is shared contracts only** — The `crates/rvlibs/` crate must only contain shared types, traits, error types, and constants that are needed by multiple workspace crates. It must not contain implementation logic, business logic, or crate-specific functionality. Zero external dependencies.
 - **No vendor lock-in** — Public types, traits, and functions must not carry vendor prefixes (`RvlibsFoo`, `RvlibsBar`). Disambiguate by module path, not by name. A type name must make sense even if the crate were renamed.
 - Edition 2024
 - Follow existing patterns in the crate being edited
