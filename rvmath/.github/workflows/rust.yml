@@ -1,0 +1,47 @@
+name: Test and Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        toolchain:
+          - stable
+          - "1.85.0"   # MSRV — matches the "Rust 1.85+" requirement in README
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Install Rust toolchain (${{ matrix.toolchain }})
+      uses: dtolnay/rust-toolchain@master
+      with:
+        toolchain: ${{ matrix.toolchain }}
+        components: rustfmt, clippy
+
+    - name: Check formatting
+      run: cargo fmt --check
+
+    - name: Run clippy lints
+      run: cargo clippy --all-targets --all-features -- -D warnings
+
+    - name: Build
+      run: cargo build --verbose
+
+    - name: Run unit tests
+      run: cargo test --lib --verbose
+
+    - name: Run doc tests
+      run: cargo test --doc --verbose
+
+    - name: Run all tests
+      run: cargo test --verbose
