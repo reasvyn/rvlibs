@@ -29,3 +29,12 @@ Core Rust language and standard library. Pure Rust — no external crates.
 | Document | What You Will Learn |
 |----------|---------------------|
 | [Modules and Packages](project-structure/modules-and-packages.md) | Crate structure, `mod`, `use`, visibility, workspaces |
+
+## Stories
+
+| Document | What You Will Learn |
+|----------|---------------------|
+| [History](stories/history.md) | Rust's origins and evolution |
+| [Milestones](stories/milestones.md) | Key moments in Rust's development |
+| [Community](stories/community.md) | Governance, teams, Code of Conduct, conferences |
+| [Corporate Adoption](stories/corporate-adoption.md) | How Google, Microsoft, Meta, Amazon use Rust |
