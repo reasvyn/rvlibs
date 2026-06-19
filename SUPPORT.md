@@ -8,8 +8,11 @@
 
 Start with the [learning paths](docs/learn/index.md) or browse crate documentation:
 
-- [rvmath docs](docs/rvmath/) — architecture, conventions, philosophy, roadmap
-- [rvtest docs](docs/rvtest/) — architecture, conventions, philosophy, roadmap
+- [Architecture](docs/architecture.md) — how crates are structured
+- [Conventions](docs/conventions.md) — code conventions across the monorepo
+- [Philosophy](docs/philosophy.md) — design principles
+- [Roadmap](docs/roadmap.md) — planned features
+- [Testing](docs/testing.md) — testing policy and organisation
 - [README](README.md) — overview and quick start
 
 ## Community Support

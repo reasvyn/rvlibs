@@ -37,12 +37,11 @@ cargo test -p rvtest
 
 | Topic | Docs |
 |-------|------|
-| rvmath architecture | [docs/rvmath/architecture.md](docs/rvmath/architecture.md) |
-| rvmath conventions | [docs/rvmath/conventions.md](docs/rvmath/conventions.md) |
-| rvmath roadmap | [docs/rvmath/roadmap.md](docs/rvmath/roadmap.md) |
-| rvtest architecture | [docs/rvtest/architecture.md](docs/rvtest/architecture.md) |
-| testing with rvtest | [docs/learn/tests/index.md](docs/learn/tests/index.md) |
-| rvtest conventions | [docs/rvtest/conventions.md](docs/rvtest/conventions.md) |
+| architecture | [docs/architecture.md](docs/architecture.md) |
+| conventions | [docs/conventions.md](docs/conventions.md) |
+| philosophy | [docs/philosophy.md](docs/philosophy.md) |
+| roadmap | [docs/roadmap.md](docs/roadmap.md) |
+| testing | [docs/testing.md](docs/testing.md) |
 | learning paths | [docs/learn/index.md](docs/learn/index.md) |
 
 ## Contributing

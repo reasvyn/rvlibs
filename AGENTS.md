@@ -13,8 +13,11 @@ rvlibs/
 │   ├── rvtest-macros/  # Proc-macros for rvtest
 │   └── cargo-rvtest/   # CLI binary for rvtest
 ├── docs/
-│   ├── rvmath/
-│   ├── rvtest/
+│   ├── architecture.md    # Crate architecture
+│   ├── conventions.md     # Code conventions
+│   ├── philosophy.md      # Design philosophy
+│   ├── roadmap.md         # Development roadmap
+│   ├── testing.md         # Testing policy
 │   └── learn/             # Learning paths
 └── .github/            # CI, issue templates, community files
 ```

@@ -37,8 +37,8 @@ Open an issue at https://github.com/reasvyn/rvlibs/issues/new. Include:
 ### Suggest a Feature
 
 Check the relevant roadmap first — your idea might already be planned:
-- [rvmath roadmap](docs/rvmath/roadmap.md)
-- [rvtest roadmap](docs/rvtest/roadmap.md)
+- [rvmath roadmap](docs/roadmap.md#rvmath)
+- [rvtest roadmap](docs/roadmap.md#rvtest)
 
 If not, open an issue with:
 - A clear description of the problem
@@ -105,8 +105,11 @@ rvlibs/
 │   └── cargo-rvtest/       # CLI binary for rvtest
 │       └── src/
 ├── docs/
-│   ├── rvmath/             # rvmath documentation
-│   ├── rvtest/             # rvtest documentation
+│   ├── architecture.md     # Crate architecture
+│   ├── conventions.md      # Code conventions
+│   ├── philosophy.md       # Design philosophy
+│   ├── roadmap.md          # Development roadmap
+│   ├── testing.md          # Testing policy
 │   └── learn/              # Learning paths (math, rust, tests)
 └── .github/                # CI, issue templates, community files
 ```
@@ -127,8 +130,8 @@ rvlibs/
 ## Coding Standards
 
 See the per-crate conventions docs:
-- [rvmath conventions](docs/rvmath/conventions.md)
-- [rvtest conventions](docs/rvtest/conventions.md)
+- [rvmath conventions](docs/conventions.md#rvmath-conventions)
+- [rvtest conventions](docs/conventions.md#rvtest-conventions)
 
 Key points:
 - **Edition 2024**, fmt with defaults
