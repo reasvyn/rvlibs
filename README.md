@@ -5,6 +5,8 @@
 
 **Modular · Atomic · Composite**
 
+rvlibs is a collection of modular Rust libraries designed to be small, focused, and composable — use what you need, nothing more.
+
 ## Crates
 
 | Crate | Description |
