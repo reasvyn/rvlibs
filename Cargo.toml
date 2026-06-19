@@ -1,6 +1,7 @@
 [workspace]
 resolver = "2"
 members = [
+    "crates/rvlibs",
     "crates/rvmath",
     "crates/rvtest",
     "crates/rvtest-macros",

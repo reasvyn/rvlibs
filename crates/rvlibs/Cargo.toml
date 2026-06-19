@@ -1,0 +1,12 @@
+[package]
+name = "rvlibs"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+description.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
