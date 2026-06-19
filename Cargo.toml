@@ -1,20 +1,19 @@
 [workspace]
 resolver = "2"
 members = [
-    "rvmath/crates/rvmath",
-    "rvtest/crates/rvtest",
-    "rvtest/crates/rvtest-macros",
-    "rvtest/crates/cargo-rvtest",
+    "crates/rvmath",
+    "crates/rvtest",
+    "crates/rvtest-macros",
+    "crates/cargo-rvtest",
 ]
 
 [workspace.package]
 version = "0.1.0"
 authors = ["Reas Vyn <reasvyn@gmail.com>"]
 edition = "2024"
-description = "A comprehensive, lightweight, and type-safe mathematics library for Rust"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/reasvyn/rvlibs"
-homepage = "https://docs.rs/rvmath/"
+homepage = "https://github.com/reasvyn/rvlibs"
 readme = "README.md"
-keywords = ["math", "units", "physics", "science"]
-categories = ["science", "mathematics"]
+keywords = ["math", "testing", "utilities"]
+categories = ["science", "mathematics", "development-tools"]
