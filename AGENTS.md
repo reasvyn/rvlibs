@@ -2,6 +2,22 @@
 
 This file provides context and instructions for AI coding assistants working on this monorepo.
 
+## SDLC Skills
+
+Skills follow the Software Development Life Cycle. Load the relevant skill
+for your current phase.
+
+| Phase | Skill | Description |
+|-------|-------|-------------|
+| **Planning** | `requirements-gathering` | Elicit and document feature requirements |
+| **Analysis** | `system-analysis` | Analyse feasibility, API sketch, compat |
+| **Design** | `architecture-design` | Module placement, type design, API surface |
+| **Implementation** | `feature-development` | Write code following conventions |
+| | `code-review` | Review for correctness, style, security |
+| **Testing** | `quality-assurance` | Test placement, coverage gates, verification |
+| **Deployment** | `release-management` | Version bump, publish order, tagging |
+| **Maintenance** | `issue-triage` | Classify, reproduce, resolve issues |
+
 ## Project structure
 
 ```
