@@ -46,4 +46,4 @@ cargo fmt
 - Follow existing patterns in the crate being edited
 - Doc comments (`///`) on all public items
 - Tests go in `tests/` directory at the crate level
-- rvtest uses its own BDD API for integration tests (dogfooding)
+- **Dogfooding is a top priority** — rvtest must use its own BDD API (`describe`/`it`) for all its integration tests. Never use external test frameworks or raw `#[test]` for complex test scenarios inside rvtest. This ensures rvtest eats its own dogfood and bugs surface early.
