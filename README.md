@@ -7,6 +7,12 @@
 
 rvlibs is a collection of modular Rust libraries designed to be small, focused, and composable — use what you need, nothing more.
 
+---
+
+**🦀 New to Rust?** Dive into our [comprehensive learning paths](docs/learn/index.md) — ownership, async, testing, tooling, ecosystem, and more. No prior Rust experience required.
+
+---
+
 ## Crates
 
 | Crate | Description | crates.io |
