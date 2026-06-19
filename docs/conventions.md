@@ -9,17 +9,51 @@
 
 ## Naming
 
+### Case Convention
+
 | Category | Convention | rvmath Example | rvtest Example |
 |----------|------------|----------------|----------------|
 | Crates | Lowercase, hyphenated | `rvmath` | `rvtest`, `rvtest-macros` |
+| Modules | `snake_case` | `num`, `linear_algebra` | `property`, `coverage_raw` |
 | Types | `PascalCase` | `Num`, `VecN`, `Percentage` | `TestSuite`, `RunnerConfig` |
 | Traits | `PascalCase` | `Numeric`, `Signed`, `Meta` | `TestReporter` |
 | Functions | `snake_case` | `simplify()`, `to_f64()` | `describe()`, `assert_all_pass()` |
 | Methods on builders | Fluent, consume `self` | — | `.it()`, `.tag()`, `.run()` |
+| Enum variants | `PascalCase` | `Expr::Add`, `BinaryOp::Mul` | `TestStatus::Passed` |
 | Constants | `UPPER_SNAKE_CASE` | `PI`, `TAU`, `EULER_MASCHERONI` | — |
+| Statics | `UPPER_SNAKE_CASE` | — | — |
 | Macros | `snake_case!` | `declare_family!`, `declare_units!` | — |
+| Feature flags | `snake_case` | `serde` | `macros` |
+| Type parameters | Single uppercase | `T`, `N`, `U` | — |
+| Lifetimes | `'a`, `'b`, etc. | — | — |
 | Error messages | Sentence case, no trailing period | `division by zero` | `test panicked` |
 | Doc comments | Sentence case, trailing period | `/// A 3D vector.` | `/// Create a new empty suite.` |
+
+### General Rules
+
+- **Clarity over brevity** — Names should be unambiguous even if slightly longer. Prefer `compute_volume` over `calc_v`.
+- **Avoid abbreviations** — Use `configuration` not `cfg`, `evaluate` not `eval`, `derivative` not `deriv`.
+- **Consistent verb forms** — Use imperative for constructors (`new`, `from`, `parse`), past tense for conversions (`to_f64`, `as_bytes`).
+- **Acronyms** — Treat as normal words: `to_json` not `to_JSON`, `parse_html` not `parse_HTML`. Exception: single-letter acronyms (`n_tcp`, `set_dna`).
+- **Get/Set omitted** — Rust does not use `get_`/`set_` prefixes. Use `name()` and `set_name()`.
+- **Conversions** — Use `from_` (self → other), `to_` (other → self with copy), `into_` (other → self with move), `as_` (borrowed conversion).
+- **Iterator methods** — Use `iter()`, `iter_mut()`, `into_iter()` following std conventions.
+- **Error types** — Suffix with `Error`: `ParseError`, `ConfigError`, `IoError`.
+- **Builder types** — The build method is `.build()`, the finalisation method is `.finish()`.
+
+### Test Naming
+
+- Test functions use `snake_case` with descriptive names: `add_returns_sum`, `divide_by_zero_panics`.
+- rvtest integration tests use `rvtest_` prefix: `rvtest_spec`, `rvtest_property`.
+- Test modules mirror the module structure: `mod add_tests`, `mod subtract_tests`.
+- Speak behaviour, not implementation: `returns_not_found` not `test_error_case_1`.
+
+### File and Directory Naming
+
+- Source files: `snake_case.rs` — `algebra.rs`, `coverage_raw.rs`.
+- Directories: `snake_case/` for module directories.
+- Test files: `snake_case.rs` in `tests/` — `num_basic.rs`, `matrix_basic.rs`.
+- Doc files: `snake_case.md` — `architecture.md`, `dep-graph.md`.
 
 ## Error Handling
 
