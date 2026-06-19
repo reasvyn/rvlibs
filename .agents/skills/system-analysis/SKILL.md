@@ -2,7 +2,7 @@
 
 > SDLC Phase: **Analysis**
 
-Analyse requirements and determine technical feasibility within the rvlibs workspace.
+Analyse requirements and determine feasibility.
 
 ## Steps
 
@@ -16,21 +16,22 @@ Read the dependency graph (`docs/dep-graph.md`). Map the change:
 
 ### 2. Feasibility
 
-- Can this be implemented with safe Rust only? (project convention)
+- Can this be implemented with safe Rust only?
 - Does it require new external dependencies? Keep them minimal.
-- Check the MSRV for affected crates (see `AGENTS.md` or `docs/conventions.md`).
+- Check MSRV for affected crates (see `docs/conventions.md`).
 
 ### 3. API Sketch
-
-Write a rough API surface:
 
 ```rust
 // Proposed public API
 pub fn new_feature(input: &str) -> Result<Output, rvlibs::Error>;
 ```
 
-### 4. Compatibility
+### 4. Register Findings
 
-- Is this a breaking change? (semver MAJOR)
-- Can it be additive? (semver MINOR)
-- Can it be backward-compatible? (semver PATCH)
+- If the analysis uncovers issues, register them in `docs/known-issues.md`
+- If the analysis completes without issues, update `docs/roadmap.md` with the result
+
+### 5. Human Confirmation
+
+After registration, **stop and wait for human confirmation** before proceeding to design or implementation.

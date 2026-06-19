@@ -2,7 +2,7 @@
 
 > SDLC Phase: **Maintenance**
 
-Triage, diagnose, and resolve issues.
+Triage, diagnose, and register issues.
 
 ## Steps
 
@@ -15,10 +15,9 @@ Triage, diagnose, and resolve issues.
 | Feature request | `enhancement` |
 | Documentation | `documentation` |
 
-### 2. Reproduction
+### 2. Reproduce
 
 ```bash
-# Does the issue reproduce on main?
 cargo test --workspace
 ```
 
@@ -29,13 +28,27 @@ cargo test --workspace
 
 | Severity | Action |
 |----------|--------|
-| Critical (data loss, security, crash) | Immediate fix |
+| Critical (data loss, security, crash) | Fix immediately |
 | High (feature broken, no workaround) | Fast-track |
 | Medium (feature broken, workaround exists) | Normal schedule |
 | Low (cosmetic, enhancement) | Next release |
 
-### 4. Resolution
+### 4. Register in Known Issues
 
-- **Bug**: Write a regression test, fix, then verify
-- **Feature**: Route to `requirements-gathering` skill
-- **Documentation**: Fix the relevant `.md` file
+Register the finding in `docs/known-issues.md`:
+
+```markdown
+### {YYYY-MM-DD} — {Issue Title}
+
+**Source:** issue-triage
+**Category:** {bug | design-flaw | security | …}
+**Impact:** {low | medium | high | critical}
+**Status:** registered
+
+{description and reproduction steps}
+```
+
+### 5. Human Confirmation
+
+After registration, **stop and wait for human confirmation** before fixing.
+Only **critical** issues may be fixed without confirmation.
