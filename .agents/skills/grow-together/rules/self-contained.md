@@ -11,6 +11,29 @@ docs/learn/{module}/{submodule}/{short-description}.md
 
 No numeric IDs in filenames — `ownership.md` not `01-ownership.md`.
 
+## Index Hierarchy
+
+Each directory level has an `index.md` that references only the next level down.
+Never list sibling content at the wrong level.
+
+```
+docs/learn/index.md       → lists {module}/index.md
+    {module}/index.md      → lists {submodule}/index.md
+        {submodule}/index.md → lists individual documents
+```
+
+Examples:
+
+| Level | File | Content |
+|-------|------|---------|
+| Master | `docs/learn/index.md` | `[Rust](rust/index.md)`, `[Tests](tests/index.md)` |
+| Module | `rust/index.md` | `[Basics](basics/index.md)`, `[Collections](collections/index.md)` |
+| Submodule | `rust/basics/index.md` | `[Ownership](ownership.md)`, `[Borrowing](borrowing.md)` |
+
+Index files at the module and submodule level use a table with two columns:
+`{Entity Name}` and `Description`.  Entity is `Submodule` at module level,
+`Document` at submodule level.
+
 ## Document Anatomy
 
 Every document MUST have these sections in **exactly this order**:
