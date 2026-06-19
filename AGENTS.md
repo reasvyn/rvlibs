@@ -17,7 +17,7 @@ for your current phase.
 | **Testing** | `quality-assurance` | Test placement, coverage gates, verification |
 | **Deployment** | `release-management` | Version bump, publish order, tagging |
 | **Maintenance** | `issue-triage` | Classify, reproduce, resolve issues |
-| **Docs** | `sync-docs` | Sinkronisasi markdown, fix broken links, audit references |
+| **Docs** | `sync-docs` | Synchronise markdown docs, fix broken links, audit references |
 | **Learning** | `grow-together` | Develop ecosystem-first learning content for docs/learn/ |
 
 ## Project structure
@@ -35,10 +35,12 @@ rvlibs/
 │   ├── architecture.md    # Crate architecture
 │   ├── conventions.md     # Code conventions
 │   ├── philosophy.md      # Design philosophy
-│   ├── roadmap.md         # Development roadmap
+│   ├── roadmap.md         # Development roadmap & feature proposals
+│   ├── known-issues.md    # Registered issues tracker
 │   ├── testing.md         # Testing policy
 │   └── learn/             # Learning paths
-└── .github/            # CI, issue templates, community files
+├── .github/            # CI, issue templates, community files
+└── .agents/skills/     # SDLC workflow skills
 ```
 
 ## Commands
