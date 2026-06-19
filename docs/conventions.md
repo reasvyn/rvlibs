@@ -38,8 +38,15 @@
 - **Get/Set omitted** — Rust does not use `get_`/`set_` prefixes. Use `name()` and `set_name()`.
 - **Conversions** — Use `from_` (self → other), `to_` (other → self with copy), `into_` (other → self with move), `as_` (borrowed conversion).
 - **Iterator methods** — Use `iter()`, `iter_mut()`, `into_iter()` following std conventions.
-- **Error types** — Suffix with `Error`: `ParseError`, `ConfigError`, `IoError`.
+- **Error types** — Module-specific errors get `Error` suffix: `ParseError`, `ConfigError`. Shared/public errors use bare `Error` and are disambiguated by path: `rvlibs::Error`. Never prefix with vendor/crate name (`RvlibsParseError`).
 - **Builder types** — The build method is `.build()`, the finalisation method is `.finish()`.
+
+### No Vendor Lock-In
+
+- Types, traits, and functions must not carry vendor prefixes or suffixes (`RvlibsFoo`, `RvlibsBar`).
+- Disambiguate by module path: `rvlibs::Error`, not `RvlibsError`.
+- Crate name prefixes on public types create coupling to the project name. Use plain, descriptive names that would make sense even if the crate were renamed.
+- Exception: binary/CLI crate names may use the project prefix for disambiguation (`cargo-rvtest`).
 
 ### Test Naming
 
