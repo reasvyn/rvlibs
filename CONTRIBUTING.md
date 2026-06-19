@@ -106,7 +106,8 @@ rvlibs/
 │       └── src/
 ├── docs/
 │   ├── rvmath/             # rvmath documentation
-│   └── rvtest/             # rvtest documentation
+│   ├── rvtest/             # rvtest documentation
+│   └── learn/              # Learning paths (math, rust, tests)
 └── .github/                # CI, issue templates, community files
 ```
 

@@ -41,7 +41,7 @@ cargo test -p rvtest
 | rvmath conventions | [docs/rvmath/conventions.md](docs/rvmath/conventions.md) |
 | rvmath roadmap | [docs/rvmath/roadmap.md](docs/rvmath/roadmap.md) |
 | rvtest architecture | [docs/rvtest/architecture.md](docs/rvtest/architecture.md) |
-| rvtest getting started | [docs/learn/tests/index.md](docs/learn/tests/index.md) |
+| testing with rvtest | [docs/learn/tests/index.md](docs/learn/tests/index.md) |
 | rvtest conventions | [docs/rvtest/conventions.md](docs/rvtest/conventions.md) |
 | learning paths | [docs/learn/index.md](docs/learn/index.md) |
 

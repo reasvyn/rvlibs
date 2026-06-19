@@ -54,5 +54,5 @@ Tensors are dynamic — shape and strides are managed at runtime.
 
 ## Next Steps
 
-- [Calculus](../math/calculus.md) — derivatives, integrals, numerical methods
-- [Geometry](../math/geometry.md) — 2D and 3D shape formulas
+- [Calculus](calculus.md) — derivatives, integrals, numerical methods
+- [Geometry](geometry.md) — 2D and 3D shape formulas

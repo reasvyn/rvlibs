@@ -59,5 +59,5 @@ assert!((root - 2.0).abs() < 1e-6);
 
 ## Next Steps
 
-- [Geometry](../math/geometry.md) — constants, 2D and 3D shape formulas
+- [Geometry](geometry.md) — constants, 2D and 3D shape formulas
 - [Numeric Types](numeric-types.md) — `Num<T>`, `Percentage`

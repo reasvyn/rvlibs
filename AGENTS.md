@@ -14,7 +14,8 @@ rvlibs/
 │   └── cargo-rvtest/   # CLI binary for rvtest
 ├── docs/
 │   ├── rvmath/
-│   └── rvtest/
+│   ├── rvtest/
+│   └── learn/             # Learning paths
 └── .github/            # CI, issue templates, community files
 ```
 

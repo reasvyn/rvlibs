@@ -49,5 +49,5 @@ All functions work with any `Numeric` type, including `Num<f64>` and unit-aware 
 
 ## Next Steps
 
-- [Algebra](../math/algebra.md) — symbolic expressions
-- [Linear Algebra](../math/linear-algebra.md) — vectors and matrices
+- [Algebra](algebra.md) — symbolic expressions
+- [Linear Algebra](linear-algebra.md) — vectors and matrices

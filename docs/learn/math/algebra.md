@@ -63,5 +63,5 @@ The expression evaluator supports 30+ math functions: `sqrt`, `cbrt`, `sin`, `co
 
 ## Next Steps
 
-- [Linear Algebra](../math/linear-algebra.md) — vectors, matrices, and tensors
-- [Calculus](../math/calculus.md) — derivatives and integrals
+- [Linear Algebra](linear-algebra.md) — vectors, matrices, and tensors
+- [Calculus](calculus.md) — derivatives and integrals

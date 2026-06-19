@@ -58,5 +58,5 @@ let sum = m1 + m2; // 8.0 meters
 
 ## Next Steps
 
-- [Algebra](../math/algebra.md) — symbolic expressions
-- [Linear Algebra](../math/linear-algebra.md) — vectors and matrices with unit support
+- [Algebra](algebra.md) — symbolic expressions
+- [Linear Algebra](linear-algebra.md) — vectors and matrices with unit support

@@ -70,4 +70,4 @@ assert!(a.approx_eq(&b, 1e-6));
 ## Next Steps
 
 - [Units](units.md) — dimensional analysis with type-safe units
-- [Algebra](../math/algebra.md) — symbolic expressions and simplification
+- [Algebra](algebra.md) — symbolic expressions and simplification
