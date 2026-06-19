@@ -3,7 +3,7 @@
 [![CI](https://github.com/reasvyn/rvlibs/actions/workflows/ci.yml/badge.svg)](https://github.com/reasvyn/rvlibs/actions)
 [![License](https://img.shields.io/crates/l/rvlibs.svg)](LICENSE)
 
-**Advanced Modular Libraries for Rust**
+**Modular · Atomic · Composite**
 
 ## Crates
 
