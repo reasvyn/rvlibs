@@ -19,7 +19,7 @@ glob = "0.3.2"
 regex = "1"
 sha2 = "0.10.8"
 similar = "2.7.0"
-toml = "0.8"
+toml = "1.1"
 rvtest-macros = { path = "../rvtest-macros", version = "0.3.0", optional = true }
 
 [features]
