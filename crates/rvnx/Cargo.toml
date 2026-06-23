@@ -1,0 +1,13 @@
+[package]
+name = "rvnx"
+version = "0.0.0"
+authors.workspace = true
+edition.workspace = true
+description = "Brain — Engine core, ECS, scene graph, ports for the Rveco ecosystem"
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+
+[dependencies]
+rvlibs = { path = "../rvlibs" }
+rvmath = { path = "../rvmath" }

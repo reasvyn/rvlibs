@@ -1,0 +1,13 @@
+[package]
+name = "rveco"
+version = "0.0.0"
+authors.workspace = true
+edition.workspace = true
+description = "Rveco — Creative Development Suite"
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+
+[dependencies]
+rvnx = { path = "../../crates/rvnx" }
+rvfx = { path = "../../crates/rvfx" }

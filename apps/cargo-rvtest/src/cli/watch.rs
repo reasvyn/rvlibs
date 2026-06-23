@@ -1,7 +1,7 @@
 use std::io::{self, Read, Write};
 use std::path::Path;
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::{Duration, Instant};
 
 use notify::{Config, Event, RecommendedWatcher, RecursiveMode, Watcher};
@@ -11,7 +11,16 @@ use rvtest::core::ReportFormat;
 use crate::cli::run_and_print;
 
 #[allow(clippy::too_many_arguments)]
-pub fn watch_loop(mut filter: Option<String>, format_str: String, fast: bool, slow_count: usize, cranelift: bool, parallel_frontend: Option<usize>, skip: Option<String>, use_colour: bool) {
+pub fn watch_loop(
+    mut filter: Option<String>,
+    format_str: String,
+    fast: bool,
+    slow_count: usize,
+    cranelift: bool,
+    parallel_frontend: Option<usize>,
+    skip: Option<String>,
+    use_colour: bool,
+) {
     let done = Arc::new(AtomicBool::new(false));
     let format: ReportFormat = format_str.parse().unwrap_or(ReportFormat::Pretty);
 
@@ -29,13 +38,25 @@ pub fn watch_loop(mut filter: Option<String>, format_str: String, fast: bool, sl
         }
     }
 
-    run_and_print(&filter, &format, fast, slow_count, cranelift, parallel_frontend, skip.clone(), use_colour);
+    run_and_print(
+        &filter,
+        &format,
+        fast,
+        slow_count,
+        cranelift,
+        parallel_frontend,
+        skip.clone(),
+        use_colour,
+    );
     eprint!("  Watching src/, tests/ for changes... [q] quit [r] re-run [f] filter\n\n");
 
     #[cfg(unix)]
     {
         unsafe {
-            libc::signal(libc::SIGINT, sigint_handler as *const () as libc::sighandler_t);
+            libc::signal(
+                libc::SIGINT,
+                sigint_handler as *const () as libc::sighandler_t,
+            );
         }
     }
 
@@ -66,7 +87,16 @@ pub fn watch_loop(mut filter: Option<String>, format_str: String, fast: bool, sl
                 }
                 WatchKey::Rerun => {
                     eprintln!("  Re-running tests...\n");
-                    run_and_print(&filter, &format, fast, slow_count, cranelift, parallel_frontend, skip.clone(), use_colour);
+                    run_and_print(
+                        &filter,
+                        &format,
+                        fast,
+                        slow_count,
+                        cranelift,
+                        parallel_frontend,
+                        skip.clone(),
+                        use_colour,
+                    );
                     eprint!("\n  Watching... [q] quit [r] re-run [f] filter\n\n");
                     continue;
                 }
@@ -85,7 +115,16 @@ pub fn watch_loop(mut filter: Option<String>, format_str: String, fast: bool, sl
                         }
                     }
                     eprintln!("  Re-running tests...\n");
-                    run_and_print(&filter, &format, fast, slow_count, cranelift, parallel_frontend, skip.clone(), use_colour);
+                    run_and_print(
+                        &filter,
+                        &format,
+                        fast,
+                        slow_count,
+                        cranelift,
+                        parallel_frontend,
+                        skip.clone(),
+                        use_colour,
+                    );
                     eprint!("\n  Watching... [q] quit [r] re-run [f] filter\n\n");
                     continue;
                 }
@@ -105,7 +144,16 @@ pub fn watch_loop(mut filter: Option<String>, format_str: String, fast: bool, sl
         }
 
         eprintln!("  Change detected — re-running tests...\n");
-        run_and_print(&filter, &format, fast, slow_count, cranelift, parallel_frontend, skip.clone(), use_colour);
+        run_and_print(
+            &filter,
+            &format,
+            fast,
+            slow_count,
+            cranelift,
+            parallel_frontend,
+            skip.clone(),
+            use_colour,
+        );
         eprint!("\n  Watching... [q] quit [r] re-run [f] filter\n\n");
     }
 }
@@ -113,7 +161,12 @@ pub fn watch_loop(mut filter: Option<String>, format_str: String, fast: bool, sl
 #[cfg(unix)]
 unsafe extern "C" fn sigint_handler(_: libc::c_int) {}
 
-enum WatchKey { Quit, Rerun, Filter, None }
+enum WatchKey {
+    Quit,
+    Rerun,
+    Filter,
+    None,
+}
 
 #[cfg(unix)]
 fn check_watch_key() -> WatchKey {
@@ -121,8 +174,19 @@ fn check_watch_key() -> WatchKey {
     let fd = io::stdin().as_raw_fd();
     let mut fds: libc::fd_set = unsafe { std::mem::zeroed() };
     unsafe { libc::FD_SET(fd, &mut fds) };
-    let mut tv = libc::timeval { tv_sec: 0, tv_usec: 0 };
-    let ret = unsafe { libc::select(fd + 1, &mut fds, std::ptr::null_mut(), std::ptr::null_mut(), &mut tv) };
+    let mut tv = libc::timeval {
+        tv_sec: 0,
+        tv_usec: 0,
+    };
+    let ret = unsafe {
+        libc::select(
+            fd + 1,
+            &mut fds,
+            std::ptr::null_mut(),
+            std::ptr::null_mut(),
+            &mut tv,
+        )
+    };
     if ret > 0 {
         let mut buf = [0u8; 1];
         if io::stdin().read_exact(&mut buf).is_ok() {

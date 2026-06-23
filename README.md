@@ -3,24 +3,43 @@
 [![CI](https://github.com/reasvyn/rvlibs/actions/workflows/ci.yml/badge.svg)](https://github.com/reasvyn/rvlibs/actions)
 [![License](https://img.shields.io/crates/l/rvlibs.svg)](LICENSE)
 
-**Modular · Atomic · Composite**
+**Modular · Atomic · Composite · Toward Rveco**
 
-rvlibs is a collection of modular Rust libraries designed to be small, focused, and composable — use what you need, nothing more.
+rvlibs is a modular Rust library ecosystem heading toward one goal: **Rveco** — a creative development suite.
+
+Every crate (rvmath, rvtest, rvnx, rvfx) is an independent atomic or composite building block. Rveco is the estuary that unifies them into a complete application.
+
+```
+Atomic:      rvmath  rvtest  rv* ...
+                  \     /
+Composite:    rvnx (brain)  rvfx (body)
+                    \          /
+Estuary:          rveco (application)
+```
+
+---
+
+## Crates & Apps
+
+| Crate | Role | Description | Status |
+|-------|------|-------------|--------|
+| [**rvmath**](crates/rvmath/) | Foundation | Mathematics: numerics, LA, geometry, unit types | ✅ Active |
+| [**rvtest**](crates/rvtest/) | Cross-cutting | BDD tests, property-based, coverage, mocking | ✅ Active |
+| [**rvtest-macros**](crates/rvtest-macros/) | Cross-cutting | Proc-macro API for rvtest | ✅ Active |
+| **rvlibs** | Foundation | Shared contracts, error, version, meta | ⏳ Internal |
+| **rvnx** | **Brain** | Engine core: ECS, scene graph, ports (GpuPort, WindowPort, AssetPort) | 🔜 Planned |
+| **rvfx** | **Body** | Services: rendering (wgpu), windowing (winit), asset I/O, editor UI | 🔜 Planned |
+
+| App | Description | Status |
+|-----|-------------|--------|
+| [**cargo-rvtest**](apps/cargo-rvtest/) | CLI binary for rvtest | ✅ Active |
+| **rveco** | Main application — ecosystem estuary | 🔜 Planned |
 
 ---
 
 **🦀 New to Rust?** Dive into our [comprehensive learning paths](docs/learn/index.md) — ownership, async, testing, tooling, ecosystem, and more. No prior Rust experience required.
 
 ---
-
-## Crates
-
-| Crate | Description | crates.io |
-|-------|-------------|-----------|
-| [**rvmath**](crates/rvmath/) | Comprehensive, lightweight, type-safe mathematics library | [![crates.io](https://img.shields.io/crates/v/rvmath.svg)](https://crates.io/crates/rvmath) |
-| [**rvtest**](crates/rvtest/) | Next Level Testing Library — BDD specs, property tests, coverage | [![crates.io](https://img.shields.io/crates/v/rvtest.svg)](https://crates.io/crates/rvtest) |
-| [**rvtest-macros**](crates/rvtest-macros/) | Proc-macro API for rvtest | [![crates.io](https://img.shields.io/crates/v/rvtest-macros.svg)](https://crates.io/crates/rvtest-macros) |
-| [**cargo-rvtest**](crates/cargo-rvtest/) | CLI binary for rvtest | [![crates.io](https://img.shields.io/crates/v/cargo-rvtest.svg)](https://crates.io/crates/cargo-rvtest) |
 
 ## Quick Start
 

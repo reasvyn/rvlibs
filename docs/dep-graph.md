@@ -3,44 +3,32 @@
 ## Workspace Dependency Tree
 
 ```
-                    ┌──────────────────────────────────────────────┐
-                    │                  rvlibs                      │
-                    │  Shared contracts: Error, Result, Version,  │
-                    │  meta — zero external dependencies           │
-                    └──────────┬────────────────┬────────┬────────┘
-                               │                │        │
-              ┌────────────────┼────────────────┼────────┼────────┐
-              ▼                ▼                ▼        ▼        │
-    ┌─────────────────┐ ┌──────────┐ ┌──────────────┐ ┌──────────┐│
-    │     rvmath      │ │  rvtest  │ │rvtest-macros │ │cargo-    ││
-    │  math library   │ │ testing  │ │  proc-macros │ │rvtest    ││
-    └────────┬────────┘ │ library  │ └──────────────┘ │  CLI     ││
-             │          └────┬─────┘        │         └────┬─────┘│
-             │               │              │              │      │
-             │       ┌───────┘              └──────────┐    │      │
-             │       │         (optional)              │    │      │
-             │       ▼                                 ▼    │      │
-             │  ┌─────────────────────────────────────────┐ │      │
-             │  │            rvtest-macros                 │ │      │
-             │  │  (only when rvtest feature="macros")     │ │      │
-             │  └─────────────────────────────────────────┘ │      │
-             │                                              │      │
-             └──────────────────────────┬───────────────────┘      │
-                                        │ (dev-dep only)             │
-                                        ▼                          │
-                              ┌──────────────────┐                 │
-                              │   rvtest-macros   │                 │
-                              │  (dev-dependency) │                 │
-                              └──────────────────┘                 │
-                                                                   │
-                              ┌────────────────────────────────────┘
-                              │ (dev-dep only)
-                              ▼
-                     ┌──────────────────┐
-                     │     rvtest        │
-                     │  (crate metadata  │
-                     │   + integration)  │
-                     └──────────────────┘
+                    rvlibs
+                        │
+            ┌───────────┼───────────┐
+            │           │           │
+            ▼           ▼           ▼
+         rvmath     rvtest    rvtest-macros
+            │           │
+            │      ┌────┴────┐
+            │      │         │
+            │      │    cargo-rvtest (apps/)
+            │      │         │
+            └──────┼─────────┘
+                   │
+                   ▼
+                 rvnx (brain)
+                    │
+               ┌────┴────┐
+               │         │
+               ▼         ▼
+             rvfx     rveco (apps/)
+            (body)   (estuary)
+              │
+         ┌────┴────┐
+         │         │
+       wgpu     winit
+       naga     ...
 ```
 
 ## Dependency Rules
@@ -57,13 +45,27 @@
 | | `rvtest` | dev-only |
 | **cargo-rvtest** | `rvlibs` | direct |
 | | `rvtest` | direct |
+| **rvnx** | `rvlibs` | direct |
+| | `rvmath` | direct |
+| | *(external crates as needed)* | direct |
+| | `rvtest` | dev-only |
+| **rvfx** | `rvnx` | direct |
+| | `wgpu`, `winit`, `naga`, ... | direct |
+| | `rvtest` | dev-only |
+| **rveco** | `rvnx` | direct |
+| | `rvfx` | direct |
+| | `rvtest` | dev-only |
 
 ## Key Principles
 
-1. **rvlibs is the root** — it has zero dependencies and sits at the bottom of every dependency chain. All ecosystem crates depend on `rvlibs`, never the other way.
+1. **rvlibs is the root** — Zero dependencies. All ecosystem crates depend on `rvlibs`, never the other way.
 
-2. **No circular deps** — The dependency graph is a DAG. `rvtest` → `rvtest-macros` (optional) and `rvtest-macros` → `rvtest` (dev-only) are managed: dev-dependencies do not create cycles in published packages.
+2. **rvnx (brain) defines, rvfx (body) implements** — rvfx depends on rvnx to implement its port traits. Never the other way around.
 
-3. **Dev-only edges never propagate** — `rvtest` as a dev-dep of `rvmath` and `rvtest-macros` means those crates can use rvtest for testing without creating a circular dependency.
+3. **rveco is the estuary** — Depends on rvnx and rvfx, unifying both into a single application.
 
-4. **Shared contracts live in rvlibs** — Any type, trait, or constant that two or more ecosystem crates need should live in `rvlibs` to avoid coupling them directly.
+4. **No circular deps** — The dependency graph is a DAG. `rvtest` → `rvtest-macros` (optional) and `rvtest-macros` → `rvtest` (dev-only) are managed via dev-dependencies.
+
+5. **Dev-only edges never propagate** — `rvtest` as a dev-dep does not create circular dependencies.
+
+6. **Shared contracts live in rvlibs** — Any trait, type, or constant needed by >= 2 ecosystem crates must go in `rvlibs`.

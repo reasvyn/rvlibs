@@ -35,6 +35,37 @@ fn main() {
     let mut args = Cli::parse_from(raw_args);
     cli::resolve_profile(&mut args);
 
+    // Smart auto-tuning: apply optimal defaults when no explicit flag is set
+    let cpus = std::thread::available_parallelism()
+        .map(|n| n.get())
+        .unwrap_or(4);
+    if args.max_threads == 0 {
+        args.max_threads = cpus.saturating_sub(1).max(1);
+    }
+    if !args.fast {
+        let linker = cli::tune::detect_fast_linker();
+        if linker.is_some() {
+            args.fast = true;
+        }
+    }
+    let ram_mb = (|| {
+        #[cfg(target_os = "linux")]
+        {
+            let content = std::fs::read_to_string("/proc/meminfo").ok()?;
+            for line in content.lines() {
+                if let Some(rest) = line.strip_prefix("MemTotal:") {
+                    let parts: Vec<&str> = rest.split_whitespace().collect();
+                    let kb: u64 = parts.first()?.parse().ok()?;
+                    return Some(kb / 1024);
+                }
+            }
+        }
+        None::<u64>
+    })();
+    if ram_mb.map_or(false, |r| r >= 4096) {
+        cli::set_build_cache_enabled(true);
+    }
+
     // === Coverage mode ===
     if args.coverage || args.coverage_open {
         cli::run_coverage(&args);
@@ -53,7 +84,9 @@ fn main() {
         cli::set_build_cache_enabled(true);
     }
     if args.why_slow {
-        unsafe { std::env::set_var("RVTEST_WHY_SLOW", "1"); }
+        unsafe {
+            std::env::set_var("RVTEST_WHY_SLOW", "1");
+        }
     }
 
     // === Snapshot config ===
@@ -89,7 +122,10 @@ fn main() {
     let flaky_filter = if args.quarantine && !args.include_flaky {
         let flaky = rvtest::core::load_flaky_tests();
         if !flaky.is_empty() {
-            eprintln!("  ⚠  {} test(s) in quarantine (use --include-flaky to override).", flaky.len());
+            eprintln!(
+                "  ⚠  {} test(s) in quarantine (use --include-flaky to override).",
+                flaky.len()
+            );
             Some(flaky.join("|"))
         } else {
             None
@@ -108,12 +144,20 @@ fn main() {
     // === Warm daemon mode ===
     if args.warm {
         eprintln!("  Warming test binaries...");
-        let binaries = cli::build_test_binaries(args.fast, args.cranelift, args.parallel_frontend, args.workspace);
+        let binaries = cli::build_test_binaries(
+            args.fast,
+            args.cranelift,
+            args.parallel_frontend,
+            args.workspace,
+        );
         if binaries.is_empty() {
             eprintln!("  No test binaries to warm.");
         } else {
             cli::save_warm_state(&binaries);
-            eprintln!("  {} test binary(ies) warmed. Use `cargo rvtest` to run from cache.", binaries.len());
+            eprintln!(
+                "  {} test binary(ies) warmed. Use `cargo rvtest` to run from cache.",
+                binaries.len()
+            );
         }
         std::process::exit(0);
     }
@@ -176,7 +220,14 @@ fn main() {
             args.filter.clone()
         };
 
-        let run = cli::run_cargo_test(filter.as_deref(), args.fast, args.cranelift, args.parallel_frontend, args.workspace, combined_skip.as_deref());
+        let run = cli::run_cargo_test(
+            filter.as_deref(),
+            args.fast,
+            args.cranelift,
+            args.parallel_frontend,
+            args.workspace,
+            combined_skip.as_deref(),
+        );
 
         if args.list {
             for suite in &run.suites {
@@ -188,7 +239,12 @@ fn main() {
             eprintln!("\n  {} test(s) listed.", total);
         } else {
             let use_colour = cli::use_color(cli::resolve_color(args.color.as_deref()));
-            let report = cli::render(&ReportFormat::Pretty, &run, args.profile_slow.unwrap_or(0) as usize, use_colour);
+            let report = cli::render(
+                &ReportFormat::Pretty,
+                &run,
+                args.profile_slow.unwrap_or(0) as usize,
+                use_colour,
+            );
             println!("{report}");
             rvtest::core::save_failed_tests(&run);
         }
@@ -197,7 +253,9 @@ fn main() {
 
     // === Test mode ===
     if args.impact && args.filter.is_none() {
-        if let Some(impact_filter) = cli::git_impact_filter(args.filter.as_deref(), args.skip.as_deref()) {
+        if let Some(impact_filter) =
+            cli::git_impact_filter(args.filter.as_deref(), args.skip.as_deref())
+        {
             eprintln!("  🔍 Impact analysis detected, auto-filtering: {impact_filter}");
             args.filter = Some(impact_filter);
         } else {
@@ -240,11 +298,21 @@ fn main() {
 
     if args.sandbox {
         let mut rl = rvtest::sandbox::ResourceLimits::default();
-        if let Some(n) = args.sandbox_max_fds { rl = rl.with_max_fds(n); }
-        if let Some(n) = args.sandbox_max_procs { rl = rl.with_max_processes(n); }
-        if let Some(n) = args.sandbox_max_stack { rl = rl.with_max_stack(n); }
-        if args.sandbox_no_core { rl = rl.no_core_dumps(); }
-        if let Some(n) = args.sandbox_max_as { rl = rl.with_max_address_space(n); }
+        if let Some(n) = args.sandbox_max_fds {
+            rl = rl.with_max_fds(n);
+        }
+        if let Some(n) = args.sandbox_max_procs {
+            rl = rl.with_max_processes(n);
+        }
+        if let Some(n) = args.sandbox_max_stack {
+            rl = rl.with_max_stack(n);
+        }
+        if args.sandbox_no_core {
+            rl = rl.no_core_dumps();
+        }
+        if let Some(n) = args.sandbox_max_as {
+            rl = rl.with_max_address_space(n);
+        }
 
         let sb_config = rvtest::sandbox::SandboxConfig::default()
             .with_fs_whitelist(rvtest::sandbox::parse_fs_whitelist(&args.sandbox_fs))
@@ -267,19 +335,37 @@ fn main() {
 
     if args.cranelift || args.parallel_frontend.is_some() {
         if !cli::is_nightly() {
-            eprintln!("warning: --cranelift and --parallel-frontend require nightly Rust.\n\
-                       Switch with: `rustup default nightly` or use `cargo +nightly rvtest`.");
+            eprintln!(
+                "warning: --cranelift and --parallel-frontend require nightly Rust.\n\
+                       Switch with: `rustup default nightly` or use `cargo +nightly rvtest`."
+            );
         }
         if args.cranelift && !cli::has_cranelift_component() {
-            eprintln!("warning: Cranelift codegen backend not found.\n\
-                       Install: `rustup component add rustc-codegen-cranelift-preview --toolchain nightly`");
+            eprintln!(
+                "warning: Cranelift codegen backend not found.\n\
+                       Install: `rustup component add rustc-codegen-cranelift-preview --toolchain nightly`"
+            );
         }
     }
 
     let run = if args.isolate {
-        cli::run_tests_isolated(args.filter.as_deref(), combined_skip.as_deref(), args.fast, args.cranelift, args.parallel_frontend, args.workspace)
+        cli::run_tests_isolated(
+            args.filter.as_deref(),
+            combined_skip.as_deref(),
+            args.fast,
+            args.cranelift,
+            args.parallel_frontend,
+            args.workspace,
+        )
     } else {
-        cli::run_cargo_test(args.filter.as_deref(), args.fast, args.cranelift, args.parallel_frontend, args.workspace, combined_skip.as_deref())
+        cli::run_cargo_test(
+            args.filter.as_deref(),
+            args.fast,
+            args.cranelift,
+            args.parallel_frontend,
+            args.workspace,
+            combined_skip.as_deref(),
+        )
     };
 
     rvtest::core::save_failed_tests(&run);
@@ -294,25 +380,41 @@ fn main() {
             for suite in &run.suites {
                 for test in &suite.tests {
                     if let Some(ref stats) = test.bench_stats
-                        && let Some(b) = baseline.get(&test.name) {
-                            let base_mean = b["mean_secs"].as_f64().unwrap_or(0.0);
-                            let current_mean = stats.mean.as_secs_f64();
-                            let ratio = current_mean / base_mean;
-                            if ratio > 1.2 {
-                                eprintln!("  ⚠  REGRESSION: {} mean {:.3}ms vs baseline {:.3}ms ({:.1}% slower)",
-                                    test.name, current_mean * 1000.0, base_mean * 1000.0, (ratio - 1.0) * 100.0);
-                            } else if ratio < 0.8 {
-                                eprintln!("  ✓  IMPROVEMENT: {} mean {:.3}ms vs baseline {:.3}ms ({:.1}% faster)",
-                                    test.name, current_mean * 1000.0, base_mean * 1000.0, (1.0 - ratio) * 100.0);
-                            }
+                        && let Some(b) = baseline.get(&test.name)
+                    {
+                        let base_mean = b["mean_secs"].as_f64().unwrap_or(0.0);
+                        let current_mean = stats.mean.as_secs_f64();
+                        let ratio = current_mean / base_mean;
+                        if ratio > 1.2 {
+                            eprintln!(
+                                "  ⚠  REGRESSION: {} mean {:.3}ms vs baseline {:.3}ms ({:.1}% slower)",
+                                test.name,
+                                current_mean * 1000.0,
+                                base_mean * 1000.0,
+                                (ratio - 1.0) * 100.0
+                            );
+                        } else if ratio < 0.8 {
+                            eprintln!(
+                                "  ✓  IMPROVEMENT: {} mean {:.3}ms vs baseline {:.3}ms ({:.1}% faster)",
+                                test.name,
+                                current_mean * 1000.0,
+                                base_mean * 1000.0,
+                                (1.0 - ratio) * 100.0
+                            );
                         }
+                    }
                 }
             }
         }
     }
 
     let use_colour = cli::use_color(cli::resolve_color(args.color.as_deref()));
-    let mut report = cli::render(&format, &run, args.profile_slow.unwrap_or(0) as usize, use_colour);
+    let mut report = cli::render(
+        &format,
+        &run,
+        args.profile_slow.unwrap_or(0) as usize,
+        use_colour,
+    );
 
     // Show --diff comparison
     if args.diff {
@@ -322,31 +424,55 @@ fn main() {
             let _ = writeln!(report);
             let _ = writeln!(report, "  {} Run diff vs previous run:", cli::dim("📊"));
             if !diff.new_failures.is_empty() {
-                let _ = writeln!(report, "    {} New failures ({}):", cli::coloured_str("✗", "31", use_colour), diff.new_failures.len());
+                let _ = writeln!(
+                    report,
+                    "    {} New failures ({}):",
+                    cli::coloured_str("✗", "31", use_colour),
+                    diff.new_failures.len()
+                );
                 for name in &diff.new_failures {
                     let _ = writeln!(report, "      • {name}");
                 }
             }
             if !diff.recovered.is_empty() {
-                let _ = writeln!(report, "    {} Recovered ({}):", cli::coloured_str("✓", "32", use_colour), diff.recovered.len());
+                let _ = writeln!(
+                    report,
+                    "    {} Recovered ({}):",
+                    cli::coloured_str("✓", "32", use_colour),
+                    diff.recovered.len()
+                );
                 for name in &diff.recovered {
                     let _ = writeln!(report, "      • {name}");
                 }
             }
             if !diff.slower.is_empty() {
-                let _ = writeln!(report, "    {} Slower ({}):", cli::coloured_str("↓", "33", use_colour), diff.slower.len());
+                let _ = writeln!(
+                    report,
+                    "    {} Slower ({}):",
+                    cli::coloured_str("↓", "33", use_colour),
+                    diff.slower.len()
+                );
                 for (name, prev, new) in &diff.slower {
                     let _ = writeln!(report, "      • {name}  {prev:.2}s → {new:.2}s");
                 }
             }
             if !diff.faster.is_empty() {
-                let _ = writeln!(report, "    {} Faster ({}):", cli::coloured_str("↑", "32", use_colour), diff.faster.len());
+                let _ = writeln!(
+                    report,
+                    "    {} Faster ({}):",
+                    cli::coloured_str("↑", "32", use_colour),
+                    diff.faster.len()
+                );
                 for (name, prev, new) in &diff.faster {
                     let _ = writeln!(report, "      • {name}  {prev:.2}s → {new:.2}s");
                 }
             }
         } else {
-            let _ = writeln!(report, "\n  {} No significant changes from previous run.", cli::dim("📊"));
+            let _ = writeln!(
+                report,
+                "\n  {} No significant changes from previous run.",
+                cli::dim("📊")
+            );
         }
     }
 
@@ -369,7 +495,14 @@ fn main() {
 
     if args.gap_analysis {
         let src_dir = std::path::Path::new("src");
-        let gaps = rvtest::core::analyze_gaps(&run, if src_dir.exists() { Some(src_dir) } else { None });
+        let gaps = rvtest::core::analyze_gaps(
+            &run,
+            if src_dir.exists() {
+                Some(src_dir)
+            } else {
+                None
+            },
+        );
         if gaps.is_empty() {
             println!("\n  ✅ No test gaps detected.");
         } else {
@@ -477,7 +610,10 @@ mod tests {
 
     #[test]
     fn parse_cargo_test_output_fallback_section() {
-        let suites = parse_cargo_test_output("", "test foo ... ok\ntest result: ok. 1 passed; 0 failed; 0 ignored\n");
+        let suites = parse_cargo_test_output(
+            "",
+            "test foo ... ok\ntest result: ok. 1 passed; 0 failed; 0 ignored\n",
+        );
         assert!(!suites.is_empty());
     }
 
@@ -538,7 +674,8 @@ failures:
     #[test]
     fn parse_cargo_test_output_extra_lines_after_last_section() {
         let stderr = "Running unittests src/lib.rs\n";
-        let stdout = "test t1 ... ok\ntest result: ok. 1 passed; 0 failed\ntest extra_after_result ... ok\n";
+        let stdout =
+            "test t1 ... ok\ntest result: ok. 1 passed; 0 failed\ntest extra_after_result ... ok\n";
         let suites = parse_cargo_test_output(stderr, stdout);
         assert_eq!(suites.len(), 1);
         assert_eq!(suites[0].tests.len(), 1);
@@ -701,10 +838,17 @@ test result: ok. 0 passed; 0 failed; 0 ignored
     fn render_with_slow_tests() {
         let mut suite = TestSuite::new("test");
         suite.tests.push(TestCase {
-            name: "test :: slow".into(), suite: Some("test".into()), tags: vec![],
-            status: TestStatus::Passed, duration: Duration::from_secs(2),
-            assertions: 0, location: None, parameters: vec![], captured_output: None,
-            bench_stats: None, bench_threshold: None,
+            name: "test :: slow".into(),
+            suite: Some("test".into()),
+            tags: vec![],
+            status: TestStatus::Passed,
+            duration: Duration::from_secs(2),
+            assertions: 0,
+            location: None,
+            parameters: vec![],
+            captured_output: None,
+            bench_stats: None,
+            bench_threshold: None,
         });
         let run = rvtest::core::TestRun {
             suites: vec![suite],
@@ -727,9 +871,22 @@ test result: ok. 0 passed; 0 failed; 0 ignored
     #[test]
     fn render_all_formats() {
         let run = rvtest::core::TestRun::new();
-            for fmt in [ReportFormat::Pretty, ReportFormat::Tap, ReportFormat::Junit, ReportFormat::Json, ReportFormat::Compact, ReportFormat::Github, ReportFormat::Agent, ReportFormat::Html, ReportFormat::Nextest] {
+        for fmt in [
+            ReportFormat::Pretty,
+            ReportFormat::Tap,
+            ReportFormat::Junit,
+            ReportFormat::Json,
+            ReportFormat::Compact,
+            ReportFormat::Github,
+            ReportFormat::Agent,
+            ReportFormat::Html,
+            ReportFormat::Nextest,
+        ] {
             let result = cli::render(&fmt, &run, 0, false);
-            assert!(!result.is_empty(), "render output should not be empty for {fmt:?}");
+            assert!(
+                !result.is_empty(),
+                "render output should not be empty for {fmt:?}"
+            );
         }
     }
 
@@ -737,10 +894,17 @@ test result: ok. 0 passed; 0 failed; 0 ignored
     fn render_slow_zero_no_slow_section() {
         let mut suite = TestSuite::new("test");
         suite.tests.push(TestCase {
-            name: "test :: fast".into(), suite: Some("test".into()), tags: vec![],
-            status: TestStatus::Passed, duration: Duration::from_millis(1),
-            assertions: 0, location: None, parameters: vec![], captured_output: None,
-            bench_stats: None, bench_threshold: None,
+            name: "test :: fast".into(),
+            suite: Some("test".into()),
+            tags: vec![],
+            status: TestStatus::Passed,
+            duration: Duration::from_millis(1),
+            assertions: 0,
+            location: None,
+            parameters: vec![],
+            captured_output: None,
+            bench_stats: None,
+            bench_threshold: None,
         });
         let run = rvtest::core::TestRun {
             suites: vec![suite],
@@ -749,7 +913,10 @@ test result: ok. 0 passed; 0 failed; 0 ignored
             duration: Duration::from_millis(1),
         };
         let result = cli::render(&ReportFormat::Pretty, &run, 0, false);
-        assert!(!result.contains("Slowest"), "should not show slowest section when count is 0");
+        assert!(
+            !result.contains("Slowest"),
+            "should not show slowest section when count is 0"
+        );
     }
 
     #[test]

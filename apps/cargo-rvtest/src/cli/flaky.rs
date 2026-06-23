@@ -3,7 +3,14 @@ use std::collections::HashMap;
 use crate::cli::run_cargo_test;
 
 /// Run `cargo test` N times and report which tests are flaky.
-pub fn detect_flaky(filter: Option<String>, num_runs: u32, verbose: bool, fast: bool, cranelift: bool, parallel_frontend: Option<usize>) {
+pub fn detect_flaky(
+    filter: Option<String>,
+    num_runs: u32,
+    verbose: bool,
+    fast: bool,
+    cranelift: bool,
+    parallel_frontend: Option<usize>,
+) {
     eprintln!("\n  🔍 Running test suite {num_runs} times to detect flaky tests...\n");
 
     let mut results: HashMap<String, (u32, u32)> = HashMap::new();
@@ -13,7 +20,14 @@ pub fn detect_flaky(filter: Option<String>, num_runs: u32, verbose: bool, fast: 
             eprint!("  Run {run}/{num_runs}... ");
         }
 
-        let test_run = run_cargo_test(filter.as_deref(), fast, cranelift, parallel_frontend, false, None);
+        let test_run = run_cargo_test(
+            filter.as_deref(),
+            fast,
+            cranelift,
+            parallel_frontend,
+            false,
+            None,
+        );
 
         for suite in &test_run.suites {
             for test in &suite.tests {
@@ -47,9 +61,7 @@ pub fn detect_flaky(filter: Option<String>, num_runs: u32, verbose: bool, fast: 
         if rate < 100.0 {
             flaky_found = true;
             flaky_names.push(name.clone());
-            eprintln!(
-                "  ⚠  {name:<60} {passes}/{total} passes ({rate:.0}%)"
-            );
+            eprintln!("  ⚠  {name:<60} {passes}/{total} passes ({rate:.0}%)");
         }
     }
 
